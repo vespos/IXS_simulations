@@ -1,0 +1,25 @@
+miscut 34.35:
+	15.275 keV
+	slits: open, 7um
+
+
+
+Additional question:
+n_lens?
+slope error on crystals?
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+DONE
+
+miscut 27.98:
+	E=12, 14, 15, 17.795keV,
+	hkl=660, 440
+	slits: open, 7um
+	resolution at detector
+
+table of crystal efficiency:
+	initial bandwidth: 100 meV
+	number of rays at each crystals
+
