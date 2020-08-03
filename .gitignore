@@ -4,8 +4,9 @@ __pycache__/
 *$py.class
 
 # Plot folders
-./tunable_monochromator/plots
-./spectrometer/fig
+./tunable_monochromator/plots/*
+./spectrometer/fig/*
+*.png
 
 # C extensions
 *.so
