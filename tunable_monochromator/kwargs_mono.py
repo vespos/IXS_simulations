@@ -26,8 +26,10 @@ def mono_kwargs(
     screens=None
     ):
     
+    Eratio = E0/18 # beam size scales as 1/E. Ref: 300um at 18keV
     FWHM_x = 1000
     FWHM_z = 300
+    # FWHM_z = 300/Eratio
 
     screens_kwargs = []
 
@@ -132,8 +134,8 @@ def mono_kwargs(
         'name': 'slits',
         'center': center,
         'kind': ['left', 'right', 'bottom', 'top'],
-        # 'opening': [-5, 5, -.0035, .0035]
-        'opening': [-5, 5, -5, 5]
+        'opening': [-5, 5, -.0035, .0035]
+        # 'opening': [-5, 5, -5, 5]
         }
     
     if (screens is None) or ('slits' in screens):

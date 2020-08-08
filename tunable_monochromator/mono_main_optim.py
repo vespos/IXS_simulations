@@ -28,14 +28,15 @@ E0 = 11215
 dE = 0.05
 # hkl = [6,6,0]
 # hkl = [4,4,4]
-hkl = [4,4,0]
+# hkl = [4,4,0]
+hkl = [3,3,3]
 withLens = False
 
 # Save folders
 subfolder = 'test/'
 save_prefix = 'slits_open_'
 save_suffix = ''
-do_plot = 'all3'
+do_plot = '-all'
 
 
 if E0==17795 and hkl==[6,6,0]:
@@ -65,12 +66,19 @@ elif E0==12000 and hkl==[4,4,4]:
     manual_pitch_corr = [0, 2.6e-6, 0, 0] # 12 keV, 444
 
 elif E0==11215 and hkl==[4,4,0]:
-    miscut = np.radians(0)
-    manual_pitch_corr = [0, 0, 0, 0] # 11.215 keV, 440
+    miscut = np.radians(27.98)
+    manual_pitch_corr = [0, 2.875e-5, 0, 0] # 11.215 keV, 440
+elif E0==11215 and hkl==[3,3,3]:
+    miscut = np.radians(9.3)
+    manual_pitch_corr = [0, 4.9e-6, 0, 0] # 11.215 keV, 333
+elif E0==11215 and hkl==[4,4,4]:
+    miscut = np.radians(9.3)
+    manual_pitch_corr = [0, 0, 0, 0] # 11.215 keV, 444
 
 else:
     miscut = 0
     manual_pitch_corr = [0, 0, 0, 0]
+
 oes_kwargs, screens_kwargs = kwa.mono_kwargs(E0, dE, hkl, miscut, \
     crystal_pitch_corr=manual_pitch_corr, withLens=withLens)
 
