@@ -21,66 +21,77 @@ from xrt.backends.raycing.oes import OE, ParabolicalMirrorParam, DoubleParaboloi
 from xrt.backends.raycing.materials import Material, Crystal, CrystalSi
 from xrt.backends.raycing.apertures import RectangularAperture, DoubleSlit
 
-import kwargs_mono as kwa
+import kwargs_mono_2020Dec as kwa
 
-repeat = 10
-E0 = 11215
-dE = 0.05
-# hkl = [6,6,0]
-# hkl = [4,4,4]
+repeat = 5
+E0 = 17995
+hkl = [6,6,0]
 # hkl = [4,4,0]
-hkl = [3,3,3]
+# hkl = [4,4,4]
+# hkl = [3,3,3]
 withLens = True
 
 # Save folders
-subfolder = '{:d}keV/Si{}{}{}/'.format(int(np.round(E0/1000)), hkl[0], hkl[1], hkl[2])
+# subfolder = '{:d}keV/Si{}{}{}/'.format(int(np.round(E0/1000)), hkl[0], hkl[1], hkl[2])
+subfolder = 'test/'
 # save_prefix = 'slits_open_'
-save_prefix = 'slits_7um_'
+save_prefix = 'heatload_'
 save_suffix = ''
 do_plot = 'all'
 
+if E0==17995 and hkl==[6,6,0]:
+    miscut = np.radians(29.5)
+    manual_pitch_corr = [0, 0, 0, 0]
+elif E0==12665 and hkl==[6,6,0]:
+    miscut = np.radians(29.5)
+    manual_pitch_corr = [0, 0, 0, 0]
+elif E0==9481 and hkl==[4,4,0]:
+    miscut = np.radians(29.5)
+    manual_pitch_corr = [0, 0, 0, 0]
 
-if E0==17795 and hkl==[6,6,0]:
-    miscut = np.radians(27.98)
-    manual_pitch_corr = [0, 1.65e-5, 0, 0] # 18 keV, 660
-elif E0==16000 and hkl==[6,6,0]:
-    miscut = np.radians(27.98)
-    manual_pitch_corr = [0, 1.06e-5, 0, 0] # 16 keV, 660
-elif E0==14000 and hkl==[6,6,0]:
-    miscut = np.radians(27.98)
-    manual_pitch_corr = [0, 7.9e-6, 0, 0] # 14 keV, 660
-elif E0==12000 and hkl==[6,6,0]:
-    miscut = np.radians(27.98)
-    manual_pitch_corr = [0, 6.4e-6, 0, 0] # 12 keV, 660
 
-elif E0==17795 and hkl==[4,4,4]:
-    miscut = np.radians(9.3)
-    manual_pitch_corr = [0, 2.8e-6, 0, 0] # 18 keV, 444
-elif E0==16000 and hkl==[4,4,4]:
-    miscut = np.radians(9.3)
-    manual_pitch_corr = [0, 2.7e-6, 0, 0] # 16 keV, 444
-elif E0==14000 and hkl==[4,4,4]:
-    miscut = np.radians(9.3)
-    manual_pitch_corr = [0, 2.6e-6, 0, 0] # 14 keV, 444
-elif E0==12000 and hkl==[4,4,4]:
-    miscut = np.radians(9.3)
-    manual_pitch_corr = [0, 2.6e-6, 0, 0] # 12 keV, 444
+# if E0==17795 and hkl==[6,6,0]:
+#     miscut = np.radians(27.98)
+#     manual_pitch_corr = [0, 1.65e-5, 0, 0] # 18 keV, 660
+# elif E0==16000 and hkl==[6,6,0]:
+#     miscut = np.radians(27.98)
+#     manual_pitch_corr = [0, 1.06e-5, 0, 0] # 16 keV, 660
+# elif E0==14000 and hkl==[6,6,0]:
+#     miscut = np.radians(27.98)
+#     manual_pitch_corr = [0, 7.9e-6, 0, 0] # 14 keV, 660
+# elif E0==12000 and hkl==[6,6,0]:
+#     miscut = np.radians(27.98)
+#     manual_pitch_corr = [0, 6.4e-6, 0, 0] # 12 keV, 660
 
-elif E0==11215 and hkl==[4,4,0]:
-    miscut = np.radians(27.98)
-    manual_pitch_corr = [0, 2.875e-5, 0, 0] # 11.215 keV, 440
-elif E0==11215 and hkl==[3,3,3]:
-    miscut = np.radians(9.3)
-    manual_pitch_corr = [0, 4.9e-6, 0, 0] # 11.215 keV, 440
-elif E0==11215 and hkl==[4,4,4]:
-    miscut = np.radians(9.3)
-    manual_pitch_corr = [0, 1.15e-5, 0, 0] # 11.215 keV, 440
+# elif E0==17795 and hkl==[4,4,4]:
+#     miscut = np.radians(9.3)
+#     manual_pitch_corr = [0, 2.8e-6, 0, 0] # 18 keV, 444
+# elif E0==16000 and hkl==[4,4,4]:
+#     miscut = np.radians(9.3)
+#     manual_pitch_corr = [0, 2.7e-6, 0, 0] # 16 keV, 444
+# elif E0==14000 and hkl==[4,4,4]:
+#     miscut = np.radians(9.3)
+#     manual_pitch_corr = [0, 2.6e-6, 0, 0] # 14 keV, 444
+# elif E0==12000 and hkl==[4,4,4]:
+#     miscut = np.radians(9.3)
+#     manual_pitch_corr = [0, 2.6e-6, 0, 0] # 12 keV, 444
+
+# elif E0==11215 and hkl==[4,4,0]:
+#     miscut = np.radians(27.98)
+#     manual_pitch_corr = [0, 2.875e-5, 0, 0] # 11.215 keV, 440
+# elif E0==11215 and hkl==[3,3,3]:
+#     miscut = np.radians(9.3)
+#     manual_pitch_corr = [0, 4.9e-6, 0, 0] # 11.215 keV, 440
+# elif E0==11215 and hkl==[4,4,4]:
+#     miscut = np.radians(9.3)
+#     manual_pitch_corr = [0, 1.15e-5, 0, 0] # 11.215 keV, 440
 
 else:
+    print('Parameters not known\n')
     miscut = 0
     manual_pitch_corr = [0, 0, 0, 0]
 
-oes_kwargs, screens_kwargs = kwa.mono_kwargs(E0, dE, hkl, miscut, \
+oes_kwargs, screens_kwargs = kwa.mono_kwargs(E0, hkl, miscut, \
     crystal_pitch_corr=manual_pitch_corr, withLens=withLens)
 
 
@@ -155,9 +166,12 @@ def define_plots(bl):
                 saveName=str(saveName), aspect='auto')
         else:
             plot = XYCPlot(beam=screen.name,
-                xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-1.2,1.2]),
+                # xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-1.2,1.2]),
+                xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-5,5]),
                 yaxis=xrtplot.XYCAxis(label="z",fwhmFormatStr='%.3f'),
-                caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f'),
+                # caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f'),
+                caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f',
+                    limits=E0+np.array([-0.05,0.05])),
                 title=screen.name+ '_y' + str(int(screen.center[1])),
                 saveName=str(saveName))
             # plot = XYCPlot(beam=screen.name,

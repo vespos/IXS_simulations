@@ -134,8 +134,8 @@ def mono_kwargs(
         'name': 'slits',
         'center': center,
         'kind': ['left', 'right', 'bottom', 'top'],
-        'opening': [-5, 5, -.0035, .0035]
-        # 'opening': [-5, 5, -5, 5]
+        # 'opening': [-5, 5, -.0035, .0035]
+        'opening': [-5, 5, -5, 5]
         }
     
     if (screens is None) or ('slits' in screens):
