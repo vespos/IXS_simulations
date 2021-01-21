@@ -38,8 +38,8 @@ def mono_kwargs(
     ):
     
     FWHM_x = 1000
-    # FWHM_z = 1250 #um
-    FWHM_z = 300 #um
+    FWHM_z = 1250 #um
+    # FWHM_z = 300 #um
 
     dE = get_source_bw(E0)
     sig_x, sig_y = get_source_div(E0)
@@ -48,21 +48,21 @@ def mono_kwargs(
     screens_kwargs = []
 
     # SOURCE
-    d_source = 200
+    d_source = 20
     source_kwargs = {
         'name': 'source',
         'center': [0,-d_source,0],
         'nrays': 1e5,
-        'dx': FWHM_x/1000/2.634, # mm
-        'dz': FWHM_z/1000/2.634, # mm
+        'dx': FWHM_x/1000/2.355, # mm
+        'dz': FWHM_z/1000/2.355, # mm
         'dxprime': sig_x, # rad
         'dzprime': sig_y, # rad
         # 'distE': 'flat', # lines, normal, flat
         # 'energies': [E0-dE, E0+dE],
         'distE': 'normal', # lines, normal, flat
         'energies': [E0, dE],
-        # 'polarization': 'h'
-        'polarization': 'v'
+        'polarization': 'h'
+        # 'polarization': 'v'
         }
     angle = 0
 
@@ -150,8 +150,8 @@ def mono_kwargs(
         'name': 'slits',
         'center': center,
         'kind': ['left', 'right', 'bottom', 'top'],
-        'opening': [-5, 5, -.0035, .0035]
-        # 'opening': [-5, 5, -2, 2]
+        # 'opening': [-5, 5, -.0025, .00025]
+        'opening': [-5, 5, -3, 3]
         }
     
     if (screens is None) or ('slits' in screens):
@@ -194,7 +194,7 @@ def mono_kwargs(
         'pitch': 'auto',
         'positionRoll': np.pi,
         'material': Si_crystal,
-        'alpha': 0
+        'alpha': -miscut
         }
 
     if (screens is None) or ('crystal2' in screens):
@@ -216,7 +216,7 @@ def mono_kwargs(
         'pitch': 'auto',
         'positionRoll': 0,
         'material': Si_crystal,
-        'alpha': -miscut
+        'alpha': 0
         }
     
     if (screens is None) or ('crystal3' in screens):

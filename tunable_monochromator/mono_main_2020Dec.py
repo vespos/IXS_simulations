@@ -23,17 +23,17 @@ from xrt.backends.raycing.apertures import RectangularAperture, DoubleSlit
 
 import kwargs_mono_2020Dec as kwa
 
-repeat = 5
-E0 = 17995
-hkl = [6,6,0]
-# hkl = [4,4,0]
+repeat = 10
+E0 = 9481
+# hkl = [6,6,0]
+hkl = [4,4,0]
 # hkl = [4,4,4]
 # hkl = [3,3,3]
 withLens = True
 
 # Save folders
-# subfolder = '{:d}keV/Si{}{}{}/'.format(int(np.round(E0/1000)), hkl[0], hkl[1], hkl[2])
-subfolder = 'test/'
+subfolder = '{:d}keV/Si{}{}{}/'.format(int(np.round(E0/1000)), hkl[0], hkl[1], hkl[2])
+# subfolder = 'test/'
 # save_prefix = 'slits_open_'
 save_prefix = 'heatload_'
 save_suffix = ''
@@ -41,13 +41,13 @@ do_plot = 'all'
 
 if E0==17995 and hkl==[6,6,0]:
     miscut = np.radians(29.5)
-    manual_pitch_corr = [0, 0, 0, 0]
+    manual_pitch_corr = [0, 2.71e-5, 2e-5, 0] # 18 keV, 660
 elif E0==12665 and hkl==[6,6,0]:
     miscut = np.radians(29.5)
-    manual_pitch_corr = [0, 0, 0, 0]
+    manual_pitch_corr = [0, 7.5e-6, 0, 0] # 13 keV, 660
 elif E0==9481 and hkl==[4,4,0]:
     miscut = np.radians(29.5)
-    manual_pitch_corr = [0, 0, 0, 0]
+    manual_pitch_corr = [0, 2.07e-5, 0, 0] # 9 keV, 440
 
 
 # if E0==17795 and hkl==[6,6,0]:
@@ -159,35 +159,37 @@ def define_plots(bl):
                 + str(int(screen.center[1])) + save_suffix + '.png')
         if 'slits' in screen.name:
             plot = XYCPlot(beam=screen.name,
-                xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-0.01,0.01]),
-                yaxis=xrtplot.XYCAxis(label="z",fwhmFormatStr='%.3f', limits=[-0.05,0.05]),
-                caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f'),
+                xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-0.02,0.02]),
+                yaxis=xrtplot.XYCAxis(label="z",fwhmFormatStr='%.3f', limits=[-0.2,0.2]),
+                caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f',
+                    limits=E0+np.array([-0.05,0.05])),
+                title=screen.name+ '_y' + str(int(screen.center[1])),
+                saveName=str(saveName), aspect='auto')
+        elif 'crl' in screen.name:
+            plot = XYCPlot(beam=screen.name,
+                xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-1.5,1.5]),
+                yaxis=xrtplot.XYCAxis(label="z",fwhmFormatStr='%.3f', limits=[-0.5,0.5]),
+                caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f',
+                    limits=E0+np.array([-0.05,0.05])),
                 title=screen.name+ '_y' + str(int(screen.center[1])),
                 saveName=str(saveName), aspect='auto')
         else:
             plot = XYCPlot(beam=screen.name,
-                # xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-1.2,1.2]),
-                xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-5,5]),
+                xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f', limits=[-1.7,1.7]),
                 yaxis=xrtplot.XYCAxis(label="z",fwhmFormatStr='%.3f'),
-                # caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f'),
                 caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f',
                     limits=E0+np.array([-0.05,0.05])),
                 title=screen.name+ '_y' + str(int(screen.center[1])),
                 saveName=str(saveName))
-            # plot = XYCPlot(beam=screen.name,
-            #     xaxis=xrtplot.XYCAxis(label="x",fwhmFormatStr='%.3f'),
-            #     yaxis=xrtplot.XYCAxis(label="z",fwhmFormatStr='%.3f'),
-            #     caxis=xrtplot.XYCAxis(label="energy",unit=r"eV",offset=E0,fwhmFormatStr='%.4f'),
-            #     title=screen.name+ '_y' + str(int(screen.center[1])),
-            #     saveName=str(saveName))
         plots.append(plot)
         
         if do_plot=='all':
             saveName = ('./plots/' + subfolder + save_prefix + screen.name + '_y' 
                 + str(int(screen.center[1])) + '_divVsE' + save_suffix + '.png')
             plot = XYCPlot(beam=screen.name,
-                xaxis=xrtplot.XYCAxis(label="energy", unit="eV", offset=E0, limits=None),
-                yaxis=xrtplot.XYCAxis(label="z'", unit="urad", factor=1E6, limits=None),
+                xaxis=xrtplot.XYCAxis(label="energy", unit="eV", offset=E0,
+                    limits=E0+np.array([-0.1,0.1])),
+                yaxis=xrtplot.XYCAxis(label="z'", unit="urad", factor=1E6, limits=[-30,30]),
                 caxis=xrtplot.XYCAxis(label="energy",unit="eV",offset=E0,fwhmFormatStr='%.4f',),
                 title=screen.name+ '_y' + str(int(screen.center[1])),
                 saveName=saveName, aspect='auto')
@@ -196,8 +198,9 @@ def define_plots(bl):
             saveName = ('./plots/' + subfolder + save_prefix + screen.name + '_y' 
                 + str(int(screen.center[1])) + '_zVsE' + save_suffix + '.png')
             plot = XYCPlot(beam=screen.name,
-                xaxis=xrtplot.XYCAxis(label="energy", unit="eV", offset=E0),
-                yaxis=xrtplot.XYCAxis(label="z", unit="mm"),
+                xaxis=xrtplot.XYCAxis(label="energy", unit="eV", offset=E0, 
+                    limits=E0+np.array([-0.1,0.1])),
+                yaxis=xrtplot.XYCAxis(label="z", unit="mm", limits=[-0.5,0.5]),
                 caxis=xrtplot.XYCAxis(label="energy",unit="eV",offset=E0,fwhmFormatStr='%.4f',),
                 title=screen.name+ '_y' + str(int(screen.center[1])),
                 saveName=saveName, aspect='auto')
